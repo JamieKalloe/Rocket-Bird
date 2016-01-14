@@ -1,6 +1,8 @@
 package net.kalloe.astroclash;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -12,7 +14,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     //Variables
     private GameThread thread;
-
+    private Background background;
+    public static final int WIDTH = 856;
+    public static final int HEIGHT = 480;
+    public static int MOVESPEED = -5;
 
     public GamePanel(Context context) {
         super(context);
@@ -47,6 +52,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
         //Start the game loop
         thread.setRunning(true);
         thread.start();
@@ -58,6 +64,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update() {
+        background.update();
+    }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        final float scaleFactorX = (float) getWidth() / (WIDTH * 1.f);
+        final float scaleFactorY = (float) getHeight() / (HEIGHT * 1.f);
+
+        if(canvas != null) {
+            final int savedState = canvas.save();
+            canvas.scale(scaleFactorX, scaleFactorY);
+            background.draw(canvas);
+            canvas.restoreToCount(savedState);
+        }
     }
 }
