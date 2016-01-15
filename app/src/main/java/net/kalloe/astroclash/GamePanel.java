@@ -12,8 +12,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     public static final int WIDTH = 856;
     public static final int HEIGHT = 480;
+    public static final int MOVESPEED = -5;
     private GameThread thread;
     private Background bg;
+    private Player player;
 
     public GamePanel(Context context)
     {
@@ -50,7 +52,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder){
 
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
-        bg.setVector(-5);
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter), 65,25, 3);
         //we can safely start the game loop
         thread.setRunning(true);
         thread.start();
@@ -59,13 +61,29 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if(!player.getPlaying()) {
+                player.setPlaying(true);
+            } else {
+                player.setUp(true);
+            }
+            return true;
+        }
+
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            player.setUp(false);
+            return true;
+        }
+
         return super.onTouchEvent(event);
     }
 
     public void update()
     {
-
-        bg.update();
+        if(player.getPlaying()) {
+            bg.update();
+            player.update();
+        }
     }
     @Override
     public void draw(Canvas canvas)
@@ -77,6 +95,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             final int savedState = canvas.save();
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
+            player.draw(canvas);
             canvas.restoreToCount(savedState);
         }
     }
