@@ -3,7 +3,10 @@ package net.kalloe.astroclash;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -33,6 +36,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private boolean newGameCreated;
     //increase to slow down difficulty progression, decrease to speed up difficulty progression
     private int progressDenom = 20;
+    private Explosion explosion;
+    private long startReset;
+    private boolean reset;
+    private boolean dissapear;
+    private boolean started;
+    private int best;
 
 
     public GamePanel(Context context)
@@ -43,7 +52,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         //add the callback to the surfaceholder to intercept events
         getHolder().addCallback(this);
 
-        thread = new GameThread(getHolder(), this);
 
         //make gamePanel focusable so it can handle events
         setFocusable(true);
@@ -62,6 +70,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             try{thread.setRunning(false);
                 thread.join();
                 retry = false;
+                thread = null;
 
             }catch(InterruptedException e){e.printStackTrace();}
 
@@ -79,6 +88,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         botborder = new ArrayList<BotBorder>();
         smokeStartTime=  System.nanoTime();
         missileStartTime = System.nanoTime();
+
+        thread = new GameThread(getHolder(), this);
+
 
         //we can safely start the game loop
         thread.setRunning(true);
@@ -233,6 +245,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 bb.draw(canvas);
             }
 
+            drawText(canvas);
             canvas.restoreToCount(savedState);
         }
     }
@@ -335,6 +348,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         player.resetScore();
         player.setY(HEIGHT/2);
 
+        if(player.getScore() > best) {
+            best = player.getScore();
+        }
+
         //create initial borders
 
         //initial top border
@@ -369,5 +386,27 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         newGameCreated = true;
+    }
+
+    public void drawText(Canvas canvas)
+    {
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(30);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("DISTANCE: " + (player.getScore()*3), 10, HEIGHT - 10, paint);
+        canvas.drawText("BEST: " + best, WIDTH - 215, HEIGHT - 10, paint);
+
+        if(!player.getPlaying())
+        {
+            Paint paint1 = new Paint();
+            paint1.setTextSize(40);
+            paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            canvas.drawText("PRESS TO START", WIDTH/2-50, HEIGHT/2, paint1);
+
+            paint1.setTextSize(20);
+            canvas.drawText("PRESS AND HOLD TO GO UP", WIDTH/2-50, HEIGHT/2 + 20, paint1);
+            canvas.drawText("RELEASE TO GO DOWN", WIDTH/2-50, HEIGHT/2 + 40, paint1);
+        }
     }
 }
