@@ -17,6 +17,9 @@ public class Game extends Activity {
         //turn title off
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        //Initialize player's best score
+        new SharedPrefManager(this).initializeScore();
+
         //Make activity fullscreen and hide software keys (navigation)
         View decor_View = getWindow().getDecorView();
         int ui_Options = View.SYSTEM_UI_FLAG_LAYOUT_STABLE

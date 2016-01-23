@@ -42,6 +42,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private boolean dissapear;
     private boolean started;
     private int best;
+    private SharedPrefManager prefManager;
 
 
     public GamePanel(Context context)
@@ -55,6 +56,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         //make gamePanel focusable so it can handle events
         setFocusable(true);
+
+        this.prefManager = new SharedPrefManager(getContext());
+        this.best = prefManager.get(SharedPrefManager.PREF_BEST_SCORE);
     }
 
     @Override
@@ -337,6 +341,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
     public void newGame()
     {
+        if(player.getScore() > best) {
+            best = player.getScore();
+            prefManager.add(SharedPrefManager.PREF_BEST_SCORE, (best * 3));
+        }
+
         botborder.clear();
         topborder.clear();
         asteroids.clear();
@@ -348,12 +357,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         player.resetScore();
         player.setY(HEIGHT/2);
 
-        if(player.getScore() > best) {
-            best = player.getScore();
-        }
-
         //create initial borders
-
         //initial top border
         for(int i = 0; i*20<WIDTH+40;i++)
         {
@@ -394,13 +398,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         paint.setColor(Color.BLACK);
         paint.setTextSize(30);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("DISTANCE: " + (player.getScore()*3), 10, HEIGHT - 10, paint);
+
+        canvas.drawText("DISTANCE: " + (player.getScore() * 3), 10, HEIGHT - 10, paint);
         canvas.drawText("BEST: " + best, WIDTH - 215, HEIGHT - 10, paint);
 
         if(!player.getPlaying())
         {
             Paint paint1 = new Paint();
             paint1.setTextSize(40);
+
             paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             canvas.drawText("PRESS TO START", WIDTH/2-50, HEIGHT/2, paint1);
 

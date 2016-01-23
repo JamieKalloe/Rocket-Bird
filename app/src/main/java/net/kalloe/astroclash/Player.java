@@ -72,6 +72,10 @@ public class Player extends GameObject {
         return this.score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public boolean getPlaying() {
         return this.playing;
     }
