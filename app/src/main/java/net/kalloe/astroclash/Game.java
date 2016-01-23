@@ -6,9 +6,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.RelativeLayout;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 
 public class Game extends Activity {
+
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +38,28 @@ public class Game extends Activity {
 
         decor_View.setSystemUiVisibility(ui_Options);
 
-        setContentView(new GamePanel(this));
+//        setContentView(new GamePanel(this));
+        GamePanel gamePanel = new GamePanel(this);
+
+        //create and load adView
+        adView = new AdView(this);
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adView.setAdSize(AdSize.BANNER);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        // Create a RelativeLayout as the main layout and add the gameView.
+        RelativeLayout mainLayout = new RelativeLayout(this);
+        mainLayout.addView(gamePanel);
+
+        // Add adView to the bottom of the screen.
+        RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        adParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        mainLayout.addView(adView, adParams);
+
+        setContentView(mainLayout);
     }
 
 
