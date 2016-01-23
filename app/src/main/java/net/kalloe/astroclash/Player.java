@@ -69,7 +69,7 @@ public class Player extends GameObject {
     }
 
     public int getScore() {
-        return this.score;
+        return (this.score * 3);
     }
 
     public void setScore(int score) {

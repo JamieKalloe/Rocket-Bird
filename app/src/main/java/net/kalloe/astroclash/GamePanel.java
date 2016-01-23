@@ -342,8 +342,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void newGame()
     {
         if(player.getScore() > best) {
-            best = player.getScore();
-            prefManager.add(SharedPrefManager.PREF_BEST_SCORE, (best * 3));
+            try {
+                best = player.getScore();
+                prefManager.add(SharedPrefManager.PREF_BEST_SCORE, best);
+            }
+
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         botborder.clear();
@@ -399,7 +405,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         paint.setTextSize(30);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-        canvas.drawText("DISTANCE: " + (player.getScore() * 3), 10, HEIGHT - 10, paint);
+        canvas.drawText("DISTANCE: " + player.getScore(), 10, HEIGHT - 10, paint);
         canvas.drawText("BEST: " + best, WIDTH - 215, HEIGHT - 10, paint);
 
         if(!player.getPlaying())
