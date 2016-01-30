@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -45,11 +47,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private SharedPrefManager prefManager;
     private Typeface fontDescription, fontTitle;
 
-
     public GamePanel(Context context)
     {
         super(context);
-
 
         //add the callback to the surfaceholder to intercept events
         getHolder().addCallback(this);
@@ -80,6 +80,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 thread.join();
                 retry = false;
                 thread = null;
+                fontTitle = null;
+                fontDescription = null;
 
             }catch(InterruptedException e){e.printStackTrace();}
 
