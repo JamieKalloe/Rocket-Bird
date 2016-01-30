@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "net.kalloe.astroclash"
+        applicationId "net.kalloe.shurikenbird"
         minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
