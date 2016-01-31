@@ -20,7 +20,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static final int WIDTH = 856;
     public static final int HEIGHT = 480;
     public static final int MOVESPEED = -5;
-    private long smokeStartTime;
     private long missileStartTime;
     private GameThread thread;
     private Background bg;
@@ -43,7 +42,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private boolean started;
     private int best;
     private SharedPrefManager prefManager;
-    private Typeface fontDescription, fontTitle;
+//    private Typeface fontDescription, fontTitle;
 
     public GamePanel(Context context)
     {
@@ -60,8 +59,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         this.best = prefManager.get(SharedPrefManager.PREF_BEST_SCORE);
 
         //load fonts
-        this.fontDescription = Typeface.createFromAsset(getContext().getAssets(), "fonts/display_gothic.ttf");
-        this.fontTitle = Typeface.createFromAsset(getContext().getAssets(), "fonts/chinese_takeaway.ttf");
+//        this.fontDescription = Typeface.createFromAsset(getContext().getAssets(), "fonts/korean_caligraphy.ttf");
+//        this.fontTitle = Typeface.createFromAsset(getContext().getAssets(), "fonts/display_gothic.ttf");
     }
 
     @Override
@@ -78,8 +77,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 thread.join();
                 retry = false;
                 thread = null;
-                fontTitle = null;
-                fontDescription = null;
 
             }catch(InterruptedException e){e.printStackTrace();}
 
@@ -95,7 +92,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         asteroids = new ArrayList<Asteroid>();
         topborder = new ArrayList<TopBorder>();
         botborder = new ArrayList<BotBorder>();
-        smokeStartTime=  System.nanoTime();
         missileStartTime = System.nanoTime();
 
         thread = new GameThread(getHolder(), this);
@@ -292,24 +288,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
-        paint.setTextSize(33);
-        paint.setTypeface(this.fontDescription);
+        paint.setTextSize(30);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
         canvas.drawText("DISTANCE: " + player.getScore(), 10, HEIGHT - 10, paint);
-        canvas.drawText("BEST: " + best, WIDTH - 175, HEIGHT - 10, paint);
+        canvas.drawText("BEST: " + best, WIDTH - 215, HEIGHT - 10, paint);
 
         if(!player.getPlaying())
         {
             Paint paint1 = new Paint();
-            paint1.setTextSize(55);
-            paint1.setTypeface(this.fontTitle);
-            canvas.drawText("Shuriken Bird", WIDTH / 2 - 70, HEIGHT / 2, paint1);
+            paint1.setTextSize(40);
+            paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            canvas.drawText("ROCKET BIRD", WIDTH / 2 - 50, HEIGHT / 2, paint1);
 
             Paint paint2 = new Paint();
-            paint2.setTextSize(30);
-            paint2.setTypeface(this.fontDescription);
-            canvas.drawText("Press and hold to go up", WIDTH/2-70, HEIGHT/2 + 30, paint2);
-            canvas.drawText("Release to go down", WIDTH/2-70, HEIGHT/2 + 60, paint2);
+            paint2.setTextSize(20);
+            paint2.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            canvas.drawText("PRESS AND HOLD TO GO UP", WIDTH/2-50, HEIGHT/2 + 30, paint2);
+            canvas.drawText("RELEASE TO GO DOWN", WIDTH/2-50, HEIGHT/2 + 60, paint2);
         }
     }
 
@@ -317,8 +313,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setTextSize(30);
-//        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        paint.setTypeface(this.fontDescription);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
         canvas.drawText(message, (WIDTH / 2) - 120, (HEIGHT / 2) - 207, paint);
     }
