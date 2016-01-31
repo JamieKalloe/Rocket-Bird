@@ -24,22 +24,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private GameThread thread;
     private Background bg;
     private Player player;
-    private ArrayList<Asteroid> asteroids;
-    private ArrayList<TopBorder> topborder;
-    private ArrayList<BotBorder> botborder;
+    private ArrayList<Rocket> rockets;
     private Random rand = new Random();
     private int maxBorderHeight;
     private int minBorderHeight;
-    private boolean topDown = true;
-    private boolean botDown = true;
     private boolean newGameCreated;
     //increase to slow down difficulty progression, decrease to speed up difficulty progression
     private int progressDenom = 20;
-    private Explosion explosion;
-    private long startReset;
-    private boolean reset;
-    private boolean dissapear;
-    private boolean started;
     private int best;
     private SharedPrefManager prefManager;
 //    private Typeface fontDescription, fontTitle;
@@ -89,9 +80,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.material_landscape));
         player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.material_bird), 99, 66, 3);
-        asteroids = new ArrayList<Asteroid>();
-        topborder = new ArrayList<TopBorder>();
-        botborder = new ArrayList<BotBorder>();
+        rockets = new ArrayList<Rocket>();
         missileStartTime = System.nanoTime();
 
         thread = new GameThread(getHolder(), this);
@@ -134,30 +123,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             bg.update();
             player.update();
 
-            //calculate the threshold of height the border can have based on the score
-            //max and min border heart are updated, and the border switched direction when either max or
-            //min is met
-
-            maxBorderHeight = 30+player.getScore()/progressDenom;
-            //cap max border height so that borders can only take up a total of 1/2 the screen
-            if(maxBorderHeight > HEIGHT/4)maxBorderHeight = HEIGHT/4;
-            minBorderHeight = 5+player.getScore()/progressDenom;
 
             //add missiles on timer
             long missileElapsed = (System.nanoTime()-missileStartTime)/1000000;
             if(missileElapsed >(2000 - player.getScore()/4)){
 
-
                 //first missile always goes down the middle
-                if(asteroids.size()==0)
+                if(rockets.size()==0)
                 {
-                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(),R.drawable.
+                    rockets.add(new Rocket(BitmapFactory.decodeResource(getResources(),R.drawable.
                             missile),WIDTH + 10, HEIGHT/2, 45, 15, player.getScore(), 13));
                 }
                 else
                 {
 
-                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
+                    rockets.add(new Rocket(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
                             WIDTH+10, (int)(rand.nextDouble()*(HEIGHT - (maxBorderHeight * 2))+maxBorderHeight),45,15, player.getScore(),13));
                 }
 
@@ -181,12 +161,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
 
             //loop through every missile and check collision and remove
-            for(int i = 0; i<asteroids.size();i++)
+            for(int i = 0; i< rockets.size();i++)
             {
                 //update missile
-                asteroids.get(i).update();
+                rockets.get(i).update();
 
-                if(collision(asteroids.get(i),player))
+                if(collision(rockets.get(i),player))
                 {
                     try {
                         Thread.sleep(750);
@@ -197,15 +177,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     }
 
                     finally {
-                        asteroids.remove(i);
+                        rockets.remove(i);
                         player.setPlaying(false);
                     }
                     break;
                 }
                 //remove missile if it is way off the screen
-                if(asteroids.get(i).getX()<-100)
+                if(rockets.get(i).getX()<-100)
                 {
-                    asteroids.remove(i);
+                    rockets.remove(i);
                     break;
                 }
             }
@@ -240,7 +220,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             player.draw(canvas);
 
             //draw missiles
-            for(Asteroid m: asteroids)
+            for(Rocket m: rockets)
             {
                 m.draw(canvas);
             }
@@ -270,9 +250,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
-        botborder.clear();
-        topborder.clear();
-        asteroids.clear();
+        rockets.clear();
 
         minBorderHeight = 5;
         maxBorderHeight = 30;
