@@ -60,7 +60,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         this.best = prefManager.get(SharedPrefManager.PREF_BEST_SCORE);
 
         //load fonts
-        this.fontDescription = Typeface.createFromAsset(getContext().getAssets(), "fonts/korean_caligraphy.ttf");
+        this.fontDescription = Typeface.createFromAsset(getContext().getAssets(), "fonts/display_gothic.ttf");
         this.fontTitle = Typeface.createFromAsset(getContext().getAssets(), "fonts/chinese_takeaway.ttf");
     }
 
