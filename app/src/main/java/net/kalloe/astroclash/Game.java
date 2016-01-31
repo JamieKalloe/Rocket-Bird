@@ -43,7 +43,7 @@ public class Game extends Activity {
 
         //create and load adView
         adView = new AdView(this);
-        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adView.setAdUnitId(getResources().getString(R.string.banner_ad_id));
         adView.setAdSize(AdSize.BANNER);
 
         AdRequest adRequest = new AdRequest.Builder().build();
