@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AstroClash.iml" filepath="$PROJECT_DIR$/AstroClash.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Shuriken-Bird.iml" filepath="$PROJECT_DIR$/Shuriken-Bird.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

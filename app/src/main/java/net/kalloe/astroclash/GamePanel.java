@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -158,7 +156,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 if(asteroids.size()==0)
                 {
                     asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(),R.drawable.
-                            material_ninja_stars),WIDTH + 10, HEIGHT/2, 45, 15, player.getScore(), 13));
+                            missile),WIDTH + 10, HEIGHT/2, 45, 15, player.getScore(), 13));
                 }
                 else
                 {
