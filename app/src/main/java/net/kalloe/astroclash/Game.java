@@ -38,28 +38,28 @@ public class Game extends Activity {
 
         decor_View.setSystemUiVisibility(ui_Options);
 
-//        setContentView(new GamePanel(this));
-        GamePanel gamePanel = new GamePanel(this);
-
-        //create and load adView
-        adView = new AdView(this);
-        adView.setAdUnitId(getResources().getString(R.string.banner_ad_id));
-        adView.setAdSize(AdSize.BANNER);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-
-        // Create a RelativeLayout as the main layout and add the gameView.
-        RelativeLayout mainLayout = new RelativeLayout(this);
-        mainLayout.addView(gamePanel);
-
-        // Add adView to the bottom of the screen.
-        RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        adParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        mainLayout.addView(adView, adParams);
-
-        setContentView(mainLayout);
+        setContentView(new GamePanel(this));
+//        GamePanel gamePanel = new GamePanel(this);
+//
+//        //create and load adView
+//        adView = new AdView(this);
+//        adView.setAdUnitId(getResources().getString(R.string.banner_ad_id));
+//        adView.setAdSize(AdSize.BANNER);
+//
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
+//
+//        // Create a RelativeLayout as the main layout and add the gameView.
+//        RelativeLayout mainLayout = new RelativeLayout(this);
+//        mainLayout.addView(gamePanel);
+//
+//        // Add adView to the bottom of the screen.
+//        RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams(
+//                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        adParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//        mainLayout.addView(adView, adParams);
+//
+//        setContentView(mainLayout);
     }
 
 

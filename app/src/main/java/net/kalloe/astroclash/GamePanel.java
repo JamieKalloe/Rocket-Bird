@@ -146,7 +146,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
 
             if(player.getY() <= -60 || player.getY() >= 500) {
-                System.out.println("The player went off the map");
+                System.out.println("The player went off the map" + player.getY());
                 try {
                     Thread.sleep(750);
                 }
@@ -180,7 +180,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         rockets.remove(i);
                         player.setPlaying(false);
                     }
-                    break;
+//                    break;
                 }
                 //remove missile if it is way off the screen
                 if(rockets.get(i).getX()<-100)
